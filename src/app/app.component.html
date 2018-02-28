@@ -1,2 +1,46 @@
 <!--The content below is only a placeholder and can be replaced.-->
+<div class="ui right aligned container" style="margin-top:1rem">
+  <div class="ui buttons">
+    <button (click)="reload()" class="ui button">
+      <i class="redo left icon"></i>Refresh</button>
+    <button (click)="onSetting()" class="ui button">
+      <i class="cog left icon"></i>Setting</button>
+  </div>
+</div>
 <router-outlet></router-outlet>
+<div class="ui vertical footer center aligned  segment">
+  © Developed by Ifeanyi - 2018
+</div>
+
+<div id="setting" class="ui modal mini">
+  <div class="header">
+    Set emaill address
+  </div>
+  <div class="image content">
+    <div class="ui form description">
+      <div class="field">
+        <input name="email" [(ngModel)]='newEmail' placeholder="Email address" type="email">
+
+      </div>
+      <div class="field">
+        <p>Every reponse will be sent to {{newEmail || 'email address'}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui button cancel">Cancel</div>
+    <div (click)="setEmail(newEmail)" class="ui button teal approve">Save Email</div>
+  </div>
+</div>
+  
+<div id="history" class="ui modal tiny">
+  <i class="ui icon close"></i>
+  <div class="header">
+    Request History
+  </div>
+  <div class="image content">
+    <div class="ui ordered list">
+      <a *ngFor="let item of log" class="item">{{item.id}}</a>
+    </div>
+  </div>
+</div>

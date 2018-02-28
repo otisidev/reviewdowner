@@ -1,3 +1,107 @@
-<p>
-  search works!
-</p>
+<div class="ui left aligned container" style="margin-top:5vh; min-height: 70vh">
+    <div class="ui centered stackable grid" [ngClass]="{'loading':loading}">
+        <div class="three two column">
+            <h2 class="ui sub header">
+                Review
+            </h2>
+            <span style="font-size: .9rem;">downloader</span>
+        </div>
+        <div class="twelve wide column">
+            <div class="ui fluid action input">
+                <input name="searchControl" minlength="10" style=" font-size: 1.3rem;" #searchControl='ngModel' [(ngModel)]="url" placeholder="Enter URL..."
+                    type="search">
+                <div (click)="startSearch(url)" [ngClass]="{'disabled': (isAndriod(url) && !hasAndriodId(url)) || (isIOS(url) && hasAndriodId(url))}"
+                    class="ui button teal">Submit</div>
+            </div>
+            <p *ngIf='message && (searchControl.dirty || searchControl.touched)' class="ui" style="color:red">{{message}}</p>
+            <br>
+            <a *ngIf="isAndriod(url)" class="ui image green label">
+                <i class="ui google play icon"></i> Google Play
+            </a>
+            <a *ngIf="isIOS(url)" class="ui image blue label">
+                <i class="ui app store icon"></i> Apple Store
+            </a>
+            <div *ngIf="loading" class="ui active inverted dimmer">
+                <div class="ui text loader">Loading</div>
+            </div>
+            <div>
+                <div class="ui raised segment" [ngClass]="{'loading': loading || !appinfo}">
+                    <div class="ui centered stackable grid">
+                        <div class="six wide column">
+                            <div class="ui small image">
+                                <img [src]="appinfo?.icon">
+                            </div>
+                            <br>
+                            <a *ngIf="isGoogle" class="ui image green label">
+                                <i class="ui google play icon"></i> App Id
+                                <div class="detail">{{appinfo?.appId}}</div>
+                            </a>  
+                            <a *ngIf="isApple" class="ui image blue label">
+                                <i class="ui app store icon"></i> Url
+                                <div class="detail">{{appinfo?.appId}}</div>
+                            </a>
+                        </div>
+                        <div class="ten wide column">
+                            <div class="ui no-border fluid card">
+                                <div class="content">
+                            
+                                    <a href="#" class="right floated author">
+                                        <span class="ui green left pointing basic label">{{appinfo?.size || 'NA'}}</span>
+                                    </a>
+                            
+                                    <div class="header">
+                                        <a href="#">{{appinfo?.title}} </a>   <br>                                     
+                                        <span>{{appinfo?.developer}} - {{appinfo?.developerEmail}}</span>
+                                    </div>
+                                    <div class="description">
+                                        <p [innerHTML] ='appinfo?.summary'></p>
+                                    </div>
+                                </div>
+                                <div class="extra content">
+                                    <a *ngIf='appinfo?.updated' class="ui image label">
+                                        <i class="ui calendar icon"></i> Last Updated
+                                        <div class="detail">{{appinfo?.updated | date:'mediumDate'}}</div>
+                                    </a>
+                                    <a class="ui image label">
+                                        <i class="ui comments icon"></i> Reviews
+                                        <div class="detail">{{appinfo?.reviews | number}}</div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p [innerHTML]='appinfo?.description' ></p>
+                </div>
+                <div class="ui comments">
+                    <h3 *ngIf="isApple" class="ui dividing header">Apple Store Review</h3>
+                    <h3 *ngIf="isGoogle" class="ui dividing header">Google Play Review</h3>
+                    <div *ngFor="let item of googleReview" class="comment">
+                        <a class="avatar">
+                            <img [src]="item.userImage">
+                        </a>
+                        <div class="content">
+                            <a class="author">{{item?.userName}}</a>
+                            <div class="metadata">
+                                <span class="date">{{item?.date}}</span>
+                                <i class="ui star yellow icon" *ngFor="let item of getStar(item?.score)"></i>
+                            </div>
+                            <div class="text">
+                                {{item?.text}}
+                            </div>
+                            <div class="actions">
+                                <div class="extra content">
+                                <div style="margin-top:0.2rem" class="ui large left icon fluid input" [ngClass]="{'loading': adding && f.value}">
+                                    <i class="comment icon"></i>
+                                    <input type="text" [name]="'response'+i" #f (keyup.enter)="addGoogleReponse(i,f)" ngModel placeholder="Add Response...">
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

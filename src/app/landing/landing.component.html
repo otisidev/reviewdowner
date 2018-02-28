@@ -1,23 +1,16 @@
-<div class="ui right aligned container" style="margin-top:1rem">
-<div class="ui buttons">
-  <button class="ui button"><i class="history left icon"></i>History</button>
-  <button class="ui button"> <i class="cog left icon"></i>Setting</button>
-</div>
-</div>
-<div class="ui center aligned container" style="margin-top:30vh;">
-
+<div class="ui center aligned container" style="margin-top:30vh; margin-bottom: 20vh;">
   <div class="ui centered stackable grid">
     <div class="ten wide column">
       <h2 class="ui header"> Review downloader</h2>
       <div class="ui fluid action input">
-        <input placeholder="Search..." type="text">
-        <div class="ui button teal">Search</div>
+        <input name="searchControl" minlength="10" style=" font-size: 1.3rem;" #searchControl='ngModel' [(ngModel)]="search" placeholder="Enter URL..."
+          type="search">
+        <div (click)="startSearch(search)" [ngClass]="{'disabled': (isAndriod(search) && !hasAndriodId(search)) || (isIOS(search) && hasAndriodId(search))}"
+          class="ui button teal">Submit</div>
       </div>
-     
+      <p *ngIf='message && (searchControl.dirty || searchControl.touched)' class="ui" style="color:red">{{message}}</p>
     </div>
-    
+    <div>
+    </div>
   </div>
-</div>
-<div class="ui vertical footer center aligned  segment">
-   Developed by Ifeanyi - 2018
 </div>

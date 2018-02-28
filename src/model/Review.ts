@@ -1,11 +1,15 @@
-import { Reply } from "./Reply";
+import { Reply } from './Reply';
 
 export class Review {
-    id: number;
+    id: string;
     userName: string;
-    rating: number;
-    review: string;
-    link: string;
+    userImage: string;
+    score: number;
+    text: string;
+    url: string;
     date: Date;
-    response: Reply[]
+    response: Reply[];
+    constructor() {
+        this.response = [];
+    }
 }
