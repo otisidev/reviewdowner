@@ -58,8 +58,8 @@ export class SearchComponent implements OnInit {
   }
 
   // start search
-  startSearch(url) {
-
+  startSearch(url: string) {
+    url = url.replace(' ', '');
     // update domain object
     this.isGoogle = this.isAndriod(this.url);
     this.isApple = this.isIOS(this.url);
@@ -317,7 +317,7 @@ export class SearchComponent implements OnInit {
   // get  apple application id from url
   getAppleId(url: string): string {
     if (url) {
-      const item = url.replace('https://', '').replace('id', '').split('/'); 
+      const item = url.replace('https://', '').replace('id', '').split('/');
       const id = item[item.length - 1].split('?')[0];
       return id;
     }
