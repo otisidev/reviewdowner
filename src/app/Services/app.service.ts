@@ -19,7 +19,7 @@ export class AppService {
     // app domain list
     domains: string[];
     constructor(private http: Http) {
-        this.domains = ['play.google.com', 'itunes.apple.com', 'www.amazon.com'];
+        this.domains = ['play.google.com', 'itunes.apple.com', 'amazon.com'];
     }
     // notify every subscriber of new message
     notifyMessage(content: string, target: MessageTarget) {
@@ -27,6 +27,7 @@ export class AppService {
     }
 
     // validates url
+    // checks if supplied url contains predefined domain
     isUrlValid(url: string): boolean {
         const domain = this.getHostName(url);
         if (domain) {
@@ -34,7 +35,7 @@ export class AppService {
         }
         return false;
     }
-
+    // gets the urll's domain example: paly.google.com
     getHostName(url): string {
         if (url) {
             const match = url.match(/:\/\/(www[0-9]?\.)?(.[^/:]+)/i);
@@ -60,20 +61,28 @@ export class AppService {
         return this.http.get('/api/googleReview/' + appId)
             .map(items => items.json());
     }
-
+    // get more information about google play store application
     getGappInformation(appid: string): Observable<AppInfo> {
         return this.http.get('/api/googleAppInfo/' + appid)
             .map(info => info.json());
     }
+
+    // sends email to user on response
     sendEmail(email: Email): Observable<any> {
         const data = new Email(email.to, email.subject, email.content);
         return this.http.post('/api/sendMail', data)
             .map(result => result.json());
     }
 
-    getAppleReview(url): Observable<any> {
-       return  this.http.get(url)
-            .map(data =>  data.json());
+    // gets list of apple's product review
+    getAppleReview(id): Observable<any> {
+        return this.http.get('https://itunes.apple.com/rss/customerreviews/id=' + id + '/json')
+            .map(data => data.json());
+    }
+    // gets list of amazon product review
+    getAmazonReviews(isin: string): Observable<any> {
+        return this.http.get('/api/getAmazonReview/' + isin)
+            .map(items => items.json());
     }
 
 

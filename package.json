@@ -23,6 +23,7 @@
     "@angular/platform-browser": "^5.2.0",
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
+    "amazon-reviews-crawler": "^1.0.4",
     "body-parser": "^1.18.2",
     "core-js": "^2.4.1",
     "express": "^4.16.2",

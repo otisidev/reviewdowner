@@ -21,11 +21,14 @@
             <a *ngIf="isIOS(url)" class="ui image blue label">
                 <i class="ui app store icon"></i> Apple Store
             </a>
+            <a *ngIf="isAma(url)" class="ui image orange label">
+                <i class="ui amazon icon"></i> Amazon Store
+            </a>
             <div *ngIf="loading" class="ui active inverted dimmer">
                 <div class="ui text loader">Loading</div>
             </div>
             <div>
-                <div class="ui raised segment" [ngClass]="{'loading': loading || !appinfo}">
+                <div *ngIf="appinfo" class="ui raised segment" [ngClass]="{'loading': loading || !appinfo}">
                     <div class="ui centered stackable grid">
                         <div class="six wide column">
                             <div class="ui small image">
@@ -35,26 +38,27 @@
                             <a *ngIf="isGoogle" class="ui image green label">
                                 <i class="ui google play icon"></i> App Id
                                 <div class="detail">{{appinfo?.appId}}</div>
-                            </a>  
+                            </a>
                             <a *ngIf="isApple" class="ui image blue label">
-                                <i class="ui app store icon"></i> Url
+                                <i class="ui app store icon"></i> App Id
                                 <div class="detail">{{appinfo?.appId}}</div>
                             </a>
                         </div>
                         <div class="ten wide column">
                             <div class="ui no-border fluid card">
                                 <div class="content">
-                            
+
                                     <a href="#" class="right floated author">
-                                        <span class="ui green left pointing basic label">{{appinfo?.size || 'NA'}}</span>
+                                        <span class="ui green left pointing basic label">{{appinfo?.size || 'Size: NA'}}</span>
                                     </a>
-                            
+
                                     <div class="header">
-                                        <a href="#">{{appinfo?.title}} </a>   <br>                                     
+                                        <a href="#">{{appinfo?.title}} </a>
+                                        <br>
                                         <span>{{appinfo?.developer}} - {{appinfo?.developerEmail}}</span>
                                     </div>
                                     <div class="description">
-                                        <p [innerHTML] ='appinfo?.summary'></p>
+                                        <p [innerHTML]='appinfo?.summary'></p>
                                     </div>
                                 </div>
                                 <div class="extra content">
@@ -70,38 +74,51 @@
                             </div>
                         </div>
                     </div>
-                    <p [innerHTML]='appinfo?.description' ></p>
+                    <p [innerHTML]='appinfo?.description'></p>
                 </div>
-                <div class="ui comments">
+                <h1 *ngIf="amazonTitle" class="ui header">{{amazonTitle}}</h1>
+                <div class="ui threaded comments">
                     <h3 *ngIf="isApple" class="ui dividing header">Apple Store Review</h3>
                     <h3 *ngIf="isGoogle" class="ui dividing header">Google Play Review</h3>
-                    <div *ngFor="let item of googleReview" class="comment">
-                        <a class="avatar">
+                    <h3 *ngIf="isAmazon" class="ui dividing header">Amazon Store Review</h3>
+                    <div *ngFor="let item of googleReview; let parentIndex = index;" class="comment">
+                        <a *ngIf="item.userImage" class="avatar">
                             <img [src]="item.userImage">
                         </a>
                         <div class="content">
-                            <a class="author">{{item?.userName}}</a>
+                            <a [href]="item?.url" class="author">{{item?.userName}}</a>
                             <div class="metadata">
                                 <span class="date">{{item?.date}}</span>
-                                <i class="ui star yellow icon" *ngFor="let item of getStar(item?.score)"></i>
+                                <i class="ui star yellow icon" *ngFor="let c of getStar(item?.score)"></i>
                             </div>
                             <div class="text">
                                 {{item?.text}}
                             </div>
                             <div class="actions">
                                 <div class="extra content">
-                                <div style="margin-top:0.2rem" class="ui large left icon fluid input" [ngClass]="{'loading': adding && f.value}">
-                                    <i class="comment icon"></i>
-                                    <input type="text" [name]="'response'+i" #f (keyup.enter)="addGoogleReponse(i,f)" ngModel placeholder="Add Response...">
+                                    <div style="margin-top:0.2rem" class="ui large left icon fluid input" [ngClass]="{'loading': adding && f.value}">
+                                        <i class="comment icon"></i>
+                                        <input type="text" [name]="'response'+parentIndex" #f (keyup.enter)="addGoogleReponse(parentIndex,f)" ngModel placeholder="Add Response...">
+                                    </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="comments">
+                            <div *ngFor="let res of item.response" class="comment">
+                                <div class="content">
+                                    <a class="author">{{res.name}}</a>
+                                    <div class="metadata">
+                                        <span class="date">{{res?.date | date:'mediumDate'}}</span>
+                                    </div>
+                                    <div [innerHtml]='res.content' class="text">
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
+                </div>
             </div>
         </div>
-    </div>
 
-</div>
+    </div>

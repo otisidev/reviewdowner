@@ -47,8 +47,8 @@ export class LandingComponent implements OnInit {
     if (state && this.appService.getHostName(url) === SearchDomain.andriod) {
       this.message = '';
       return true;
-    } else if (this.appService.getHostName(url) !== SearchDomain.apple) {
-      this.message = 'Url is invalid!';
+    } else if (this.appService.getHostName(url) !== SearchDomain.apple && this.appService.getHostName(url) !== SearchDomain.amazon) {
+      this.message = 'invalid android store invalid!';
       return false;
     } else {
       this.message = null;
@@ -60,8 +60,8 @@ export class LandingComponent implements OnInit {
     if (state && this.appService.getHostName(url) === SearchDomain.apple) {
       this.message = null;
       return true;
-    } else if (this.appService.getHostName(url) !== SearchDomain.andriod) {
-      this.message = 'Url is invalid!';
+    } else if (this.appService.getHostName(url) !== SearchDomain.andriod && this.appService.getHostName(url) !== SearchDomain.amazon) {
+      this.message = 'invalid apple store!';
       return false;
     } else {
       this.message = null;
@@ -70,6 +70,20 @@ export class LandingComponent implements OnInit {
 
   }
 
+  isAma(url): boolean {
+    const state = this.appService.isUrlValid(url);
+    if (state && this.appService.getHostName(url) === SearchDomain.amazon) {
+      this.message = null;
+      return true;
+    } else if (this.appService.getHostName(url) !== SearchDomain.andriod && this.appService.getHostName(url) !== SearchDomain.apple) {
+      this.message = 'Invalid amazon store url!';
+      return false;
+    } else {
+      this.message = null;
+      return false;
+    }
+
+  }
   hasAndriodId(url): boolean {
     const result = this.appService.getUrlParams('id', url);
     if (result) {
