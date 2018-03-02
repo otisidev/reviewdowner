@@ -30,6 +30,7 @@ export class SearchComponent implements OnInit {
   userEmail: string;
   response: string;
   amazonTitle: string;
+  search: string;
 
   constructor(private activeRouter: ActivatedRoute, private appService: AppService) {
     this.loading = true;
@@ -220,8 +221,9 @@ export class SearchComponent implements OnInit {
       // send email
       if (this.userEmail) {
         this.adding = true;
+        const title = this.isAmazon ? this.amazonTitle : this.appinfo.title;
         // tslint:disable-next-line:max-line-length
-        const content = '<h2>Response to review</h2><p>' + reply.value + '</p> <br/><hr/> <h3> Review: </h3> <p> ' + this.googleReview[index].text + '</p> ';
+        const content = '<h2>Response to review</h2><p>' + reply.value + '</p> <br/><hr/> <h3> Review: </h3> <br/> <h4> ' + title + ' </h4> <p> ' + this.googleReview[index].text + '</p> ';
         this.appService.sendEmail(new Email(this.userEmail, 'Response to : ' + this.googleReview[index].userName + ' review.', content))
           .subscribe((res) => {
             this.adding = false;

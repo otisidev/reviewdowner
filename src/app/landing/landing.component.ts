@@ -20,6 +20,7 @@ export class LandingComponent implements OnInit {
   url: string;
   // status message
   message: string;
+  search: string;
 
   constructor(private appService: AppService, private router: Router) {
     this.appService.onMessage.subscribe((item) => {
